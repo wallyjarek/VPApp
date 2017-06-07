@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "208642588447",
+    "firebase_url": "https://vendasplus-664d3.firebaseio.com",
+    "project_id": "vendasplus-664d3",
+    "storage_bucket": "vendasplus-664d3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208642588447:android:1e9e81352175c576",
+        "android_client_info": {
+          "package_name": "com.vendasplus.vpapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "208642588447-8jnogk1td9p1qd2btjb0nogveidsrd64.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXY01Sfap1PQ1aGdlR-ylZSAZ_QAdfbTI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

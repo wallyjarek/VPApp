@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.vendasplus.vpapp.MainActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:lineSpacingExtra="30sp"
+        android:text="VENDAS PLUS"
+        android:textAlignment="center"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:layout_marginTop="55dp"
+        android:id="@+id/textView2" />
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="E-mail"
+        android:inputType="textEmailAddress"
+        android:layout_above="@+id/senha"
+        android:layout_alignStart="@+id/senha"
+        android:layout_marginBottom="34dp" />
+
+    <EditText
+        android:id="@+id/senha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Senha"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/logar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="54dp"
+        android:elevation="1dp"
+        android:text="Logar"
+        android:textSize="24sp"
+        android:layout_below="@+id/senha"
+        android:layout_centerHorizontal="true" />
+
+
+</android.widget.RelativeLayout>
