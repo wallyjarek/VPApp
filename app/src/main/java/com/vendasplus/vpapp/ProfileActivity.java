@@ -1,6 +1,7 @@
 package com.vendasplus.vpapp;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -30,6 +31,8 @@ public class ProfileActivity extends Activity implements View.OnClickListener {
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,23 +42,29 @@ public class ProfileActivity extends Activity implements View.OnClickListener {
         userData = (TextView) findViewById(R.id.dadosUsuario);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        progressDialog = new ProgressDialog(this);
 
         if(firebaseAuth.getCurrentUser() == null) {
-            startActivity(new Intent(this, MainActivity.class));
+            finish();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
         }
         user = firebaseAuth.getCurrentUser();
+        logout.setOnClickListener(this);
+
+        progressDialog.setMessage("Buscando informações...");
+        progressDialog.show();
 
         showUserData();
     }
 
     @Override
     public void onClick(View v) {
-
-        if(v == logout) {
-            firebaseAuth.signOut();
-            finish();
-            startActivity(new Intent(this, MainActivity.class));
-        }
+        firebaseAuth.signOut();
+        finish();
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     public void showUserData() {
@@ -74,6 +83,7 @@ public class ProfileActivity extends Activity implements View.OnClickListener {
     }
 
     private class getDadosVendedor extends AsyncTask<Void,Void,Vendedor> {
+
         @Override
         public void onPreExecute(){
         }
@@ -82,26 +92,17 @@ public class ProfileActivity extends Activity implements View.OnClickListener {
         public Vendedor doInBackground(Void... params){
             HttpURLConnection con = null;
             try {
-                URL url = new URL("http://vendasplus.com.br/r/vendedor/getInfoVendedorByEmail");
+
+                Uri.Builder postBody = new Uri.Builder();
+                postBody.appendQueryParameter("email", user.getEmail());
+                String query = postBody.build().toString();
+
+                URL url = new URL("http://vendasplus.com.br/r/vendedor/getInfoVendedorByEmail" + query);
                 con = (HttpURLConnection) url.openConnection();
-                con.setReadTimeout(10000);
-                con.setConnectTimeout(15000);
-                con.setRequestMethod("POST");
+                con.setReadTimeout(100000);
+                con.setConnectTimeout(150000);
+                con.setRequestMethod("GET");
                 con.setDoInput(true);
-                con.setDoOutput(true);
-
-                Uri.Builder postBody = new Uri.Builder().appendQueryParameter("email", user.getEmail());
-                String query = postBody.build().getEncodedQuery();
-
-                OutputStream os = con.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(
-                        new OutputStreamWriter(os, "UTF-8"));
-                writer.write(query);
-                writer.flush();
-                writer.close();
-                os.close();
-
-                con.connect();
 
                 String resultado = Util.streamToString(con.getInputStream());
                 Vendedor vendedor = Util.JSONToVendedor(resultado);
@@ -117,6 +118,7 @@ public class ProfileActivity extends Activity implements View.OnClickListener {
 
         @Override
         public void onPostExecute(Vendedor vendedor){
+            progressDialog.dismiss();
             editUserData(vendedor);
         }
     }
